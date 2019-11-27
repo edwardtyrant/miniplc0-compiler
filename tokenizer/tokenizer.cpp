@@ -168,13 +168,24 @@ namespace miniplc0 {
 
                     // 参考：C++string与int的相互转换（使用C++11）
                     // 网址：https://blog.csdn.net/m0_37316917/article/details/82712017
-                    long res = std::stol(ss.str());
+                    std::string temp = ss.str();
+                    int i=0;
+                    for(i = 0 ; i <temp.length();i++){
+                        if (temp[i]!='0') {
+                            temp = &temp[i];
+                            break;
+                        }else if(i==temp.length()-1) {
+                            temp = "0";
+                        }
+                    }
+
+                    long res = std::stol(temp);
                     long ma = 2;
                     ma = (ma << 31) -1;
-                    if (std::to_string(res).length() == ss.str().length() && res >= 0 && res <= ma) {
+                    if (std::to_string(res).length() == temp.length() && res >= 0 && res <= ma) {
                         // 长度相等返回这个无符号整数的token
                         return std::make_pair(
-                                std::optional<Token>(Token(TokenType::UNSIGNED_INTEGER, ss.str(), pos, previousPos())),
+                                std::optional<Token>(Token(TokenType::UNSIGNED_INTEGER, std::to_string(res), pos, previousPos())),
                                 std::optional<CompilationError>());
                     } else {
                         // 长度不相等说明里面含有其他字符
@@ -208,13 +219,25 @@ namespace miniplc0 {
 **********************************************/
                 }else {
                     unreadLast();
-                    long res = std::stol(ss.str());
+
+                    std::string temp = ss.str();
+                    int i=0;
+                    for(i = 0 ; i <temp.length();i++){
+                        if (temp[i]!='0') {
+                            temp = &temp[i];
+                            break;
+                        }else if(i==temp.length()-1) {
+                            temp = "0";
+                        }
+                    }
+
+                    long res = std::stol(temp);
                     long ma = 2;
                     ma = (ma << 31) -1;
-                    if (std::to_string(res).length() == ss.str().length() && res >= 0 && res <= ma) {
+                    if (std::to_string(res).length() == temp.length() && res >= 0 && res <= ma) {
                         // 长度相等返回这个无符号整数的token
                         return std::make_pair(
-                                std::optional<Token>(Token(TokenType::UNSIGNED_INTEGER, ss.str(), pos, currentPos())),
+                                std::optional<Token>(Token(TokenType::UNSIGNED_INTEGER, std::to_string(res), pos, currentPos())),
                                 std::optional<CompilationError>());
                     } else {
                         // 长度不相等说明里面含有其他字符
